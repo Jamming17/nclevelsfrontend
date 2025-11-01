@@ -1,7 +1,7 @@
-import type { LevelType } from "../data/Level";
+import type { LevelInterface } from "../data/Level";
 
 interface LevelProps {
-    level: LevelType;
+    level: LevelInterface;
 }
 
 function Level({level} : LevelProps) {
@@ -9,7 +9,7 @@ function Level({level} : LevelProps) {
         <div className="mb-4 flex flex-col">
             <p className="flex">ID:{level.id}</p>
             <p className="flex">{level.name} by {level.creator}</p>
-            <p className="flex">{level.difficulty} ({level.rating})</p>
+            <p className="flex">{level.difficulty} - {level.stars} ({level.rating})</p>
             <p className="flex">{level.coin_count} Coins ({level.coins_rated ? "Silver" : "Bronze"})</p>
         </div>
     )
