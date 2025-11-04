@@ -9,6 +9,17 @@ export interface LevelInterface {
     coins_rated: boolean;
 }
 
+export const EMPTY_LEVEL: LevelInterface = {
+    id: -1,
+    name: "",
+    creator: "",
+    difficulty: "",
+    stars: -1,
+    rating: "",
+    coin_count: 0,
+    coins_rated: false
+}
+
 export function levelInterfaceTypeGuard(obj: any): obj is LevelInterface {
     return (
         obj &&

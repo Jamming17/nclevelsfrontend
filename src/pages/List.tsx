@@ -1,41 +1,37 @@
 import { useState } from "react";
 
 import Level from "../components/Level";
-import { levelInterfaceTypeGuard, type LevelInterface } from "../data/Level";
+import { levelInterfaceTypeGuard, EMPTY_LEVEL, type LevelInterface } from "../data/LevelData";
 import { apiRequest } from "../apiClient";
 
 
 function List() {
 
-    const [ displayedLevel, setDisplayedLevel ] = useState({ id: 0, name: "Loading", creator: "Loading", difficulty: "Loading", rating: "Loading", stars: 0, coin_count: 0, coins_rated: false });
     const [ displayedLevelsList, setDisplayedLevelsList ] = useState<LevelInterface[]>([]);
-    const [ levelVisible, setLevelVisible ] = useState(false);
 
-    const [ inputVal, setInputVal ] = useState("s");
-
-    async function myApiTestFunc(): Promise<void> {
+    async function fetchLevelData(levelid: string): Promise<LevelInterface> {
         try {
             const data = await apiRequest("boomlings/getLevelId", {
                 params: {
-                    "str": inputVal,
+                    "str": levelid,
                 }
             });
-            console.log("Level data successfully retrieved:", data);
 
             const dataObj = typeof data === "string" ? JSON.parse(data) : data;
             if (dataObj && typeof dataObj === "object" && "success" in dataObj && "data" in dataObj) {
                 if (dataObj.success === true && levelInterfaceTypeGuard(dataObj.data)) {
-                    setDisplayedLevel(dataObj.data);
+                    console.log("Level data successfully retrieved:", dataObj.data);
+                    return dataObj.data;
                 } else {
                     console.error("Data in wrong format:", dataObj.data);
                 }
             } else {
                 console.error("Data in wrong format.");
             }
-            setLevelVisible(true);
         } catch (err) {
             console.error("Failed to fetch levels:", err)
         }
+        return EMPTY_LEVEL;
     }
 
     async function getNCLevelList(): Promise<void> {
@@ -60,19 +56,19 @@ function List() {
 
     return (
         <>
-            {levelVisible && 
+            {/*levelVisible && 
                 <div>
-                    <Level level={displayedLevel} />
+                    <Level level={displayedLevel} getData={getLevelHandler} />
                 </div>
             }
             <div>
                 <input type="text" className="m-3 border border-black bg-gray-200" onChange={(e) => {setInputVal(e.target.value)}}/>
-                <button className="cursor-pointer border border-red-700 rounded" onClick={myApiTestFunc}>Click Me!</button>
-            </div>
+                <button className="cursor-pointer border border-red-700 rounded" onClick={fetchLevelData}>Click Me!</button>
+            </div>*/}
             <br className="py-16"/>
             <button className="cursor-pointer border border-red-700 rounded" onClick={getNCLevelList}>Get the list!</button>
             {displayedLevelsList.map((level, index) => {
-                return <Level key={index} level={level} />
+                return <Level key={index} level={level} getData={fetchLevelData} />
             })}
 
         {/*
