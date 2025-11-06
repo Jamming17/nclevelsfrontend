@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import Level from "../components/Level";
 import { levelInterfaceTypeGuard, EMPTY_LEVEL, type LevelInterface } from "../data/LevelData";
 import { apiRequest } from "../apiClient";
+import { SettingsContext } from "../context/SettingsContext";
 
 
 function List() {
 
+    const { isDarkMode, toggleDarkMode } = useContext(SettingsContext);
     const [ displayedLevelsList, setDisplayedLevelsList ] = useState<LevelInterface[]>([]);
 
+    /* Fetch individual level data with a level ID as an input */
     async function fetchLevelData(levelid: string): Promise<LevelInterface> {
         try {
             const data = await apiRequest("boomlings/getLevelId", {
@@ -34,6 +37,7 @@ function List() {
         return EMPTY_LEVEL;
     }
 
+    /* Fetch the whole main list from the database */
     async function getNCLevelList(): Promise<void> {
         try {
             const data = await apiRequest("database/getLevels", {});
@@ -56,31 +60,12 @@ function List() {
 
     return (
         <>
-            {/*levelVisible && 
-                <div>
-                    <Level level={displayedLevel} getData={getLevelHandler} />
-                </div>
-            }
-            <div>
-                <input type="text" className="m-3 border border-black bg-gray-200" onChange={(e) => {setInputVal(e.target.value)}}/>
-                <button className="cursor-pointer border border-red-700 rounded" onClick={fetchLevelData}>Click Me!</button>
-            </div>*/}
             <br className="py-16"/>
             <button className="cursor-pointer border border-red-700 rounded" onClick={getNCLevelList}>Get the list!</button>
             {displayedLevelsList.map((level, index) => {
                 return <Level key={index} level={level} getData={fetchLevelData} />
             })}
-
-        {/*
-        <div className="flex flex-col">
-            {LevelsList.map(level => (
-                <Level
-                    key={level.id}
-                    level={level}
-                />
-            ))}
-            <button className="cursor-pointer border border-red-700 rounded" onClick={myApiTestFunc}>Click Me to Test!</button>
-        </div>*/}
+            {isDarkMode ? <p>dark on</p> : <p>dark off</p>}
         </>
     )
 }
