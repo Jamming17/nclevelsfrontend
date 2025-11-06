@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+/* Pusab font */
+@font-face {
+    font-family: "Pusab";
+    src: url("./assets/Pusab.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}

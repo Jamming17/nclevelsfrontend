@@ -7,6 +7,7 @@ export interface LevelInterface {
     rating: string;
     coin_count: number;
     coins_rated: boolean;
+    length: string;
 }
 
 export const EMPTY_LEVEL: LevelInterface = {
@@ -17,7 +18,8 @@ export const EMPTY_LEVEL: LevelInterface = {
     stars: -1,
     rating: "",
     coin_count: 0,
-    coins_rated: false
+    coins_rated: false,
+    length: "Tiny"
 }
 
 export function levelInterfaceTypeGuard(obj: any): obj is LevelInterface {
@@ -30,7 +32,8 @@ export function levelInterfaceTypeGuard(obj: any): obj is LevelInterface {
         !isNaN(Number(obj.stars)) &&
         typeof obj.rating === "string" &&
         !isNaN(Number(obj.coin_count)) &&
-        typeof obj.coins_rated === "boolean"
+        typeof obj.coins_rated === "boolean" &&
+        typeof obj.length === "string"
     );
 }
 
@@ -43,7 +46,8 @@ export const LevelsList: LevelInterface[] = [
         stars: 10,
         rating: "Featured",
         coin_count: 3,
-        coins_rated: true
+        coins_rated: true,
+        length: "Tiny"
     },
     {
         id: 5310094,
@@ -53,7 +57,8 @@ export const LevelsList: LevelInterface[] = [
         stars: 10,
         rating: "Featured",
         coin_count: 0,
-        coins_rated: true
+        coins_rated: true,
+        length: "Tiny"
     },
     {
         id: 5376097,
@@ -63,7 +68,8 @@ export const LevelsList: LevelInterface[] = [
         stars: 10,
         rating: "Featured",
         coin_count: 3,
-        coins_rated: false
+        coins_rated: false,
+        length: "Tiny"
     },
     {
         id: 6664095,
@@ -73,6 +79,7 @@ export const LevelsList: LevelInterface[] = [
         stars: 10,
         rating: "Featured",
         coin_count: 0,
-        coins_rated: true
+        coins_rated: true,
+        length: "Tiny"
     }
 ]

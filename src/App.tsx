@@ -9,7 +9,7 @@ function App() {
         <>
             <SettingsContextProvider>
                 <Header />
-                <div className="min-h-screen bg-gradient-to-b from-white to-pink-200">
+                <div className="min-h-screen bg-gradient-to-b from-gray-700 to-gray-800 text-white">
                     <Routes>
                         <Route path="/mainlist" element={<List />} />
                     </Routes>

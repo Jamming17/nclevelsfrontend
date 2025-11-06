@@ -62,11 +62,13 @@ function List() {
         <>
             <br className="py-16"/>
             <button className="cursor-pointer border border-red-700 rounded" onClick={getNCLevelList}>Get the list!</button>
-            {displayedLevelsList.map((level, index) => {
-                return <Level key={index} level={level} getData={fetchLevelData} />
-            })}
+                <div className="flex flex-col items-center">
+                {displayedLevelsList.map((level, index) => {
+                    return <Level key={index} level={level} getData={fetchLevelData} />
+                })}
+            </div>
             {isDarkMode ? <p>dark on</p> : <p>dark off</p>}
         </>
-    )
+    );
 }
 export default List;
