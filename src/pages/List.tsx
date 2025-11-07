@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 
 import Level from "../components/Level";
 import { levelInterfaceTypeGuard, EMPTY_LEVEL, type LevelInterface } from "../data/LevelData";
@@ -11,12 +11,20 @@ function List() {
     const { isDarkMode, toggleDarkMode } = useContext(SettingsContext);
     const [ displayedLevelsList, setDisplayedLevelsList ] = useState<LevelInterface[]>([]);
 
+    const [ mainOrExtended, setMainOrExtended ] = useState<string>("main");
+    const [ demonsOrNon, setDemonsOrNon ] = useState<string>("demons");
+
+    /* Initial load of list */
+    useEffect(() => {
+        getNCLevelList();
+    }, [mainOrExtended, demonsOrNon]);
+
     /* Fetch individual level data with a level ID as an input */
     async function fetchLevelData(levelid: string): Promise<LevelInterface> {
         try {
             const data = await apiRequest("boomlings/getLevelId", {
                 params: {
-                    "str": levelid,
+                    "str": levelid
                 }
             });
 
@@ -39,14 +47,22 @@ function List() {
 
     /* Fetch the whole main list from the database */
     async function getNCLevelList(): Promise<void> {
+        setDisplayedLevelsList([]);
         try {
-            const data = await apiRequest("database/getLevels", {});
+            const filterString = mainOrExtended + "-" + demonsOrNon;
+            console.log("filter:", filterString);
+            const data = await apiRequest("database/getLevels", {
+                params: {
+                    filter: filterString
+                }
+            });
             console.log("Database data successfully retrieved:", data);
 
             const dataObj = typeof data === "string" ? JSON.parse(data) : data;
             if (dataObj && typeof dataObj === "object" && "success" in dataObj && "data" in dataObj) {
                 if (dataObj.success === true && Array.isArray(dataObj.data) && dataObj.data.every((level: any) => levelInterfaceTypeGuard(level))) {
                     setDisplayedLevelsList(dataObj.data);
+                    console.log(`Retrieved ${dataObj.data.length} levels`);
                 } else {
                     console.error("Data in wrong format:", dataObj.data);
                 }
@@ -58,12 +74,36 @@ function List() {
         }
     }
 
+    function handleMainOrExtendedChange(e: React.ChangeEvent<HTMLInputElement>) {
+        if (e.target.checked) {
+            setMainOrExtended("all");
+        } else {
+            setMainOrExtended("main");
+        }
+    }
+
+    function handleDemonsOrNonChange(e: React.ChangeEvent<HTMLSelectElement>) {
+        setDemonsOrNon(e.target.value);
+    }
+
     return (
         <>
-            <br className="py-16"/>
-            <button className="cursor-pointer border border-red-700 rounded" onClick={getNCLevelList}>Get the list!</button>
+            <input
+                type="checkbox"
+                checked={mainOrExtended === "all"}
+                onChange={handleMainOrExtendedChange}
+                className=""
+            />
+            <select value={demonsOrNon} onChange={handleDemonsOrNonChange}>
+                <option value="demons">Demons Only</option>
+                <option value="non">Non-Demons Only</option>
+                <option value="every">Demons and Non-Demons</option>
+            </select>
                 <div className="flex flex-col items-center">
-                {displayedLevelsList.map((level, index) => {
+                {displayedLevelsList
+                    .slice()
+                    .sort((a, b) => a.id - b.id)
+                    .map((level, index) => {
                     return <Level key={index} level={level} getData={fetchLevelData} />
                 })}
             </div>

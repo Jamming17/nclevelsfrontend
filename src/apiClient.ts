@@ -11,7 +11,7 @@ export async function apiRequest<T>(
     options: ApiOptions = {}
 ): Promise<T> {
     const { method = "GET", params, headers = {} } = options;
-    const query = `?${new URLSearchParams(params).toString()}`;
+    const query = params ? `?${new URLSearchParams(params).toString()}` : "";
     try {
         const response = await fetch(`${API_BASE_URL}${endpoint}${query}`, {
             method,
