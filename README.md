@@ -5,7 +5,7 @@ This is the code repository for the frontend of my Nine Circles Level viewer for
 This website is built using React with TypeScript. Tailwind CSS is used for styling.
 
 ## How can I run this myself?
-This repository will not display any useful information unless you are also running the backend and database which can be viewed [here](https://github.com/Jamming17/Jamming17/nclevelsbackend).
+This repository will not display any useful information unless you are also running the backend and database which can be viewed [here](https://github.com/Jamming17/nclevelsbackend).
 
 To begin, open a command line terminal and navigate to the directory you want to start in. Then clone the repository and move into the cloned directory:
 ```bash
