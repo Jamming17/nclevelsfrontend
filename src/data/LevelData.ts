@@ -8,6 +8,8 @@ export interface LevelInterface {
     coin_count: number;
     coins_rated: boolean;
     length: string;
+    extra: boolean;
+    tags: string[];
 }
 
 export const EMPTY_LEVEL: LevelInterface = {
@@ -19,7 +21,9 @@ export const EMPTY_LEVEL: LevelInterface = {
     rating: "",
     coin_count: 0,
     coins_rated: false,
-    length: "Tiny"
+    length: "Tiny",
+    extra: false,
+    tags: []
 }
 
 export function levelInterfaceTypeGuard(obj: any): obj is LevelInterface {
@@ -33,11 +37,14 @@ export function levelInterfaceTypeGuard(obj: any): obj is LevelInterface {
         typeof obj.rating === "string" &&
         !isNaN(Number(obj.coin_count)) &&
         typeof obj.coins_rated === "boolean" &&
-        typeof obj.length === "string"
+        typeof obj.length === "string" &&
+        typeof obj.extra === "boolean" &&
+        Array.isArray(obj.tags) &&
+        obj.tags.every((tag: any) => typeof tag === "string")
     );
 }
 
-export const LevelsList: LevelInterface[] = [
+/*export const LevelsList: LevelInterface[] = [
     {
         id: 4284013,
         name: "Nine Circles",
@@ -82,4 +89,4 @@ export const LevelsList: LevelInterface[] = [
         coins_rated: true,
         length: "Tiny"
     }
-]
+]*/

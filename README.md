@@ -35,3 +35,4 @@ The frontend program displays a list of NC levels taken from the backend databas
 - Fallback display in case the servers (mine or RobTop's) are down
 - Add coloured level tags and tag filters
 - Filters for user coins
+- Search bar

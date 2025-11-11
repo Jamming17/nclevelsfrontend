@@ -94,7 +94,7 @@ function Level({level, getData} : LevelProps) {
                 <p className="font-bold text-md text-gray-300">by {currentLevel.creator}</p>
             </div>
 
-            {/*<button className="p-5 cursor-pointer border border-red-700 rounded-xl" onClick={reloadLevelData}>h</button>*/}
+            <button className="p-5 cursor-pointer border border-red-700 rounded-xl" onClick={reloadLevelData}>h</button>
             {/*<div className="mb-4 flex flex-col">
                 <p className="flex">ID:{currentLevel.id}</p>
                 <p className="flex">{currentLevel.name} by {currentLevel.creator}</p>

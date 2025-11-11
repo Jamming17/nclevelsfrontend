@@ -9,6 +9,7 @@ import { SettingsContext } from "../context/SettingsContext";
 function List() {
 
     const { isDarkMode, toggleDarkMode } = useContext(SettingsContext);
+    const [ allLevels, setAllLevels ] = useState<LevelInterface[]>([]);
     const [ displayedLevelsList, setDisplayedLevelsList ] = useState<LevelInterface[]>([]);
 
     const [ mainOrExtended, setMainOrExtended ] = useState<string>("main");
@@ -17,7 +18,7 @@ function List() {
     /* Initial load of list */
     useEffect(() => {
         getNCLevelList();
-    }, [mainOrExtended, demonsOrNon]);
+    }, []);
 
     /* Fetch individual level data with a level ID as an input */
     async function fetchLevelData(levelid: string): Promise<LevelInterface> {
@@ -47,7 +48,7 @@ function List() {
 
     /* Fetch the whole main list from the database */
     async function getNCLevelList(): Promise<void> {
-        setDisplayedLevelsList([]);
+        setAllLevels([]);
         try {
             const filterString = mainOrExtended + "-" + demonsOrNon;
             console.log("filter:", filterString);
@@ -58,10 +59,13 @@ function List() {
             });
             console.log("Database data successfully retrieved:", data);
 
+            /* Verify types of response */
             const dataObj = typeof data === "string" ? JSON.parse(data) : data;
             if (dataObj && typeof dataObj === "object" && "success" in dataObj && "data" in dataObj) {
                 if (dataObj.success === true && Array.isArray(dataObj.data) && dataObj.data.every((level: any) => levelInterfaceTypeGuard(level))) {
-                    setDisplayedLevelsList(dataObj.data);
+                    setAllLevels(dataObj.data);
+                    // Apply default filters
+                    setDisplayedLevelsList(dataObj.data.filter((level: any) => level.extra === false && level.stars === 10));
                     console.log(`Retrieved ${dataObj.data.length} levels`);
                 } else {
                     console.error("Data in wrong format:", dataObj.data);
@@ -75,15 +79,37 @@ function List() {
     }
 
     function handleMainOrExtendedChange(e: React.ChangeEvent<HTMLInputElement>) {
+        let levels = allLevels;
+        // Filter for main/all
         if (e.target.checked) {
             setMainOrExtended("all");
         } else {
             setMainOrExtended("main");
+            levels = levels.filter(level => level.extra === false);
         }
+        // Filter for demons/non-demons
+        if (demonsOrNon === "demons") {
+            levels = levels.filter(level => level.stars === 10);
+        } else if (demonsOrNon === "non") {
+            levels = levels.filter(level => level.stars < 10);
+        }
+        setDisplayedLevelsList(levels);
     }
 
     function handleDemonsOrNonChange(e: React.ChangeEvent<HTMLSelectElement>) {
         setDemonsOrNon(e.target.value);
+        let levels = allLevels;
+        // Filter for main/all
+        if (mainOrExtended === "main") {
+            levels = levels.filter(level => level.extra === false);
+        }
+        // Filter for demons/non-demons
+        if (e.target.value === "demons") {
+            levels = levels.filter(level => level.stars === 10);
+        } else if (e.target.value === "non") {
+            levels = levels.filter(level => level.stars < 10);
+        }
+        setDisplayedLevelsList(levels);
     }
 
     return (
@@ -92,19 +118,18 @@ function List() {
                 type="checkbox"
                 checked={mainOrExtended === "all"}
                 onChange={handleMainOrExtendedChange}
-                className=""
             />
             <select value={demonsOrNon} onChange={handleDemonsOrNonChange}>
                 <option value="demons">Demons Only</option>
                 <option value="non">Non-Demons Only</option>
                 <option value="every">Demons and Non-Demons</option>
             </select>
-                <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center">
                 {displayedLevelsList
                     .slice()
                     .sort((a, b) => a.id - b.id)
-                    .map((level, index) => {
-                    return <Level key={index} level={level} getData={fetchLevelData} />
+                    .map((level) => {
+                    return <Level key={level.id} level={level} getData={fetchLevelData} />
                 })}
             </div>
             {isDarkMode ? <p>dark on</p> : <p>dark off</p>}
