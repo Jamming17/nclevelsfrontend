@@ -19,7 +19,7 @@ function Level({level, getData} : LevelProps) {
     }
 
     return (
-        <div className="flex flex-row rounded-xl border-2 border-gray-500 mx-10 my-3 w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px] h-[200px] ">
+        <div className="flex flex-row rounded-xl bg-gray-800 border-2 border-gray-500 mx-10 my-3 w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px] h-[200px]">
             {/* Level Thumbnail */}
             <div>
                 <img 
@@ -94,7 +94,7 @@ function Level({level, getData} : LevelProps) {
                 <p className="font-bold text-md text-gray-300">by {currentLevel.creator}</p>
             </div>
 
-            <button className="p-5 cursor-pointer border border-red-700 rounded-xl" onClick={reloadLevelData}>h</button>
+            {/*<button className="p-5 cursor-pointer border border-red-700 rounded-xl" onClick={reloadLevelData}>h</button>
             {/*<div className="mb-4 flex flex-col">
                 <p className="flex">ID:{currentLevel.id}</p>
                 <p className="flex">{currentLevel.name} by {currentLevel.creator}</p>

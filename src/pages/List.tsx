@@ -78,10 +78,10 @@ function List() {
         }
     }
 
-    function handleMainOrExtendedChange(e: React.ChangeEvent<HTMLInputElement>) {
+    function handleMainOrExtendedChange() {
         let levels = allLevels;
         // Filter for main/all
-        if (e.target.checked) {
+        if (mainOrExtended === "main") {
             setMainOrExtended("all");
         } else {
             setMainOrExtended("main");
@@ -114,16 +114,32 @@ function List() {
 
     return (
         <>
-            <input
-                type="checkbox"
-                checked={mainOrExtended === "all"}
-                onChange={handleMainOrExtendedChange}
-            />
-            <select value={demonsOrNon} onChange={handleDemonsOrNonChange}>
-                <option value="demons">Demons Only</option>
-                <option value="non">Non-Demons Only</option>
-                <option value="every">Demons and Non-Demons</option>
-            </select>
+            {/* Filters */}
+            <div className="bg-gray-800 rounded-xl mx-auto px-3 my-3 py-2 w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]">
+                <p className="font-bold underline text-2xl mb-2">Filters:</p>
+                <div className="grid grid-cols-2 gap-2 text-xl mb-2">
+                    {/* Extras */}
+                    <div className="flex flex-row bg-gray-900 p-3 rounded-xl h-[70px] items-center overflow-hidden cursor-pointer" onClick={handleMainOrExtendedChange}>
+                        <p className="flex font-bold text-xl mr-5">Show Extras</p>
+                        <input
+                            type="checkbox"
+                            checked={mainOrExtended === "all"}
+                            className="flex ml-auto mr-4"
+                            style={{ width: "20px", height: "20px" }}
+                        />
+                    </div>
+                    {/* Difficulty */}
+                    <div className="flex flex-row bg-gray-900 p-3 rounded-xl h-[70px] items-center overflow-hidden">
+                        <p className="flex font-bold text-xl mr-3">Difficulty:</p>
+                        <select className="flex text-xl" value={demonsOrNon} onChange={handleDemonsOrNonChange}>
+                            <option value="demons">Demons Only</option>
+                            <option value="non">Non-Demons Only</option>
+                            <option value="every">Demons and Non-Demons</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            {/* Level List */}
             <div className="flex flex-col items-center">
                 {displayedLevelsList
                     .slice()
