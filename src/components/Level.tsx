@@ -1,13 +1,16 @@
 import { useState } from "react";
 
+import Tag from "./Tag";
 import type { LevelInterface } from "../data/LevelData";
 
 interface LevelProps {
     level: LevelInterface;
+    index: string;
+    sortMode: string;
     getData: (levelId: string) => Promise<LevelInterface>; 
 }
 
-function Level({level, getData} : LevelProps) {
+function Level({level, index, sortMode, getData} : LevelProps) {
 
     const [currentLevel, setCurrentLevel] = useState(level);
     const [imgSrc, setImgSrc] = useState(`https://levelthumbs.prevter.me/thumbnail/${currentLevel.id}/small`);
@@ -88,20 +91,28 @@ function Level({level, getData} : LevelProps) {
                 </div>
             </div>
 
-            {/* Level Details */}
-            <div className="m-3">
-                <p className="font-bold text-3xl">{currentLevel.name}</p>
-                <p className="font-bold text-md text-gray-300">by {currentLevel.creator}</p>
+            <div className="flex flex-col w-full">
+                {/* Level Details */}
+                <div className="m-3">
+                    <div className="flex flex-row">
+                        <p className="font-bold text-3xl mr-auto">{sortMode === "byDifficulty" && `#${index} - `}{currentLevel.name}</p>
+                        <p className="italic text-xl text-gray-400">#{currentLevel.id}</p>
+                    </div>
+                    <p className="font-bold text-md text-gray-300">by {currentLevel.creator}</p>
+                </div>
+
+                {/* Tags */}
+                <div className="flex flex-row ml-3 gap-2">
+                    {currentLevel.extra === true && <Tag colour="pink" text="Extra" />}
+                    <Tag colour="blue" text={currentLevel.length} />
+                    {currentLevel.tags.map((tag, index) => {
+                        return <Tag key={index} colour="yellow" text={tag} /> //Index = key is fine as order doesn't matter
+                    })}
+                </div>
             </div>
 
-            {/*<button className="p-5 cursor-pointer border border-red-700 rounded-xl" onClick={reloadLevelData}>h</button>
-            {/*<div className="mb-4 flex flex-col">
-                <p className="flex">ID:{currentLevel.id}</p>
-                <p className="flex">{currentLevel.name} by {currentLevel.creator}</p>
-                <p className="flex">{currentLevel.difficulty} - {currentLevel.stars} ({currentLevel.rating})</p>
-                <p className="flex">{currentLevel.coin_count} Coins ({currentLevel.coins_rated ? "Silver" : "Bronze"})</p>
-                <button className="border border-blue-700 rounded cursor-pointer" onClick={reloadLevelData}>View More Info</button>
-            </div>*/}
+
+            {/*<button className="p-5 cursor-pointer border border-red-700 rounded-xl" onClick={reloadLevelData}>h</button>*/}
         </div>
     );
 }

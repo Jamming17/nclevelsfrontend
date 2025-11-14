@@ -25,14 +25,12 @@ By default, Vite will run the website on port 5173, so you can access the local 
 ## Current Features
 This website currently connects to the backend API (also currently only hosted locally by me) which then manages level data all at the backend.
 
-The frontend program displays a list of NC levels taken from the backend database which can be filtered by demon/non-demon and whether or not you want to view "extras".
+The frontend program displays a list of NC levels taken from the backend database which can be filtered by demon/non-demon and whether or not you want to view "extras". You can also sort by level ID and by difficulty (currently demons only).
 
 ## Planned Features
 - Home, Info and Credits pages
 - A button to allow you to view more information about a level
-- Better level information display including level ID and length
 - Toggleable light and dark mode
 - Fallback display in case the servers (mine or RobTop's) are down
-- Add coloured level tags and tag filters
 - Filters for user coins
 - Search bar
