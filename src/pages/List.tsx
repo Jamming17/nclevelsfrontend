@@ -12,6 +12,8 @@ function List() {
     const [ allLevels, setAllLevels ] = useState<LevelInterface[]>([]);
     const [ displayedLevelsList, setDisplayedLevelsList ] = useState<LevelInterface[]>([]);
 
+    const [ errorMessage, setErrorMessage ] = useState<string>("Loading...");
+
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ mainOrExtended, setMainOrExtended ] = useState<string>("main"); // main | extended | all
     const [ demonsOrNon, setDemonsOrNon ] = useState<string>("demons"); // demons | non | every
@@ -93,12 +95,15 @@ function List() {
                     console.log(`Retrieved ${dataObj.data.length} levels`);
                 } else {
                     console.error("Data in wrong format:", dataObj.data);
+                    setErrorMessage("The NC Levels Database is currently down. Please try again later!");
                 }
             } else {
                 console.error("Data in wrong format.");
+                setErrorMessage("The NC Levels Database is currently down. Please try again later!");
             }
         } catch (err) {
             console.error("Failed to fetch from database:", err);
+            setErrorMessage("The NC Levels Database is currently down. Please try again later!");
         }
     }
 
@@ -110,15 +115,18 @@ function List() {
     }
 
     function handleMainOrExtendedChange(): void {
-        setMainOrExtended((prev) => prev === "main" ? "all" : "main")
+        setMainOrExtended((prev) => prev === "main" ? "all" : "main");
+        setErrorMessage("No levels match your filters");
     }
 
     function handleDemonsOrNonChange(e: React.ChangeEvent<HTMLSelectElement>): void {
         setDemonsOrNon(e.target.value);
+        setErrorMessage("No levels match your filters");
     }
 
     function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
         setSearchQuery(e.target.value);
+        setErrorMessage("No levels match your search query");
     }
 
     return (
@@ -198,7 +206,8 @@ function List() {
 
             {/* Level List */}
             <div className="flex flex-col items-center">
-                {displayedLevelsList
+                {displayedLevelsList.length > 0
+                ? (displayedLevelsList
                     .slice()
                     .sort((a, b) => sortMode === "byId"
                         ? a.id - b.id
@@ -209,7 +218,11 @@ function List() {
                         })())
                     .map((level, index) => {
                     return <Level key={level.id} index={(index + 1).toString()} showNumber={searchQuery === "" && sortMode === "byDifficulty" ? true : false } level={level} getData={fetchLevelData} />
-                })}
+                }))
+                : (
+                    <p className="bg-gray-800 rounded-2xl text-center font-bold mx-auto px-3 my-3 py-10 w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]">{errorMessage}</p>
+                )
+            }
             </div>
             {isDarkMode ? <p>dark on</p> : <p>dark off</p>}
         </>
