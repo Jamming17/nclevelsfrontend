@@ -6,11 +6,11 @@ import type { LevelInterface } from "../data/LevelData";
 interface LevelProps {
     level: LevelInterface;
     index: string;
-    sortMode: string;
+    showNumber: boolean;
     getData: (levelId: string) => Promise<LevelInterface>; 
 }
 
-function Level({level, index, sortMode, getData} : LevelProps) {
+function Level({level, index, showNumber, getData} : LevelProps) {
 
     const [currentLevel, setCurrentLevel] = useState(level);
     const [imgSrc, setImgSrc] = useState(`https://levelthumbs.prevter.me/thumbnail/${currentLevel.id}/small`);
@@ -95,7 +95,7 @@ function Level({level, index, sortMode, getData} : LevelProps) {
                 {/* Level Details */}
                 <div className="m-3">
                     <div className="flex flex-row">
-                        <p className="font-bold text-3xl mr-auto">{sortMode === "byDifficulty" && `#${index} - `}{currentLevel.name}</p>
+                        <p className="font-bold text-3xl mr-auto">{showNumber && `#${index} - `}{currentLevel.name}</p>
                         <p className="italic text-xl text-gray-400">#{currentLevel.id}</p>
                     </div>
                     <p className="font-bold text-md text-gray-300">by {currentLevel.creator}</p>

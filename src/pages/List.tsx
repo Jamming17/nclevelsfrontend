@@ -12,6 +12,7 @@ function List() {
     const [ allLevels, setAllLevels ] = useState<LevelInterface[]>([]);
     const [ displayedLevelsList, setDisplayedLevelsList ] = useState<LevelInterface[]>([]);
 
+    const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ mainOrExtended, setMainOrExtended ] = useState<string>("main"); // main | extended | all
     const [ demonsOrNon, setDemonsOrNon ] = useState<string>("demons"); // demons | non | every
     const [ sortMode, setSortMode ] = useState<string>("byId"); // byId | byDifficulty
@@ -82,6 +83,13 @@ function List() {
         }
     }
 
+    function handleSortFuncChange(value: string): void {
+        setSortMode(value);
+        if (value === "byDifficulty") { //Must be demons only for difficulty filter
+            setDemonsOrNon("demons");
+        }
+    }
+
     function handleMainOrExtendedChange(): void {
         let levels = allLevels;
         // Filter for main/all
@@ -97,6 +105,10 @@ function List() {
         } else if (demonsOrNon === "non") {
             levels = levels.filter(level => level.stars < 10);
         }
+
+        // Filter for search query
+        levels.filter(level => level.name.includes(searchQuery));
+
         setDisplayedLevelsList(levels);
     }
 
@@ -113,22 +125,54 @@ function List() {
         } else if (e.target.value === "non") {
             levels = levels.filter(level => level.stars < 10);
         }
+
+        // Filter for search query
+        levels.filter(level => level.name.includes(searchQuery));
+
         setDisplayedLevelsList(levels);
     }
 
-    function handleSortFuncChange(value: string): void {
-        setSortMode(value);
+    function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
+        setSearchQuery(e.target.value);
+        let levels = allLevels;
+        // Filter for main/all
+        if (mainOrExtended === "main") {
+            levels = levels.filter(level => level.extra === false);
+        }
+        // Filter for demons/non-demons
+        if (demonsOrNon === "demons") {
+            levels = levels.filter(level => level.stars === 10);
+        } else if (demonsOrNon === "non") {
+            levels = levels.filter(level => level.stars < 10);
+        }
+
+        // Filter for search query
+        levels = levels.filter(level => level.name.toLowerCase().includes(e.target.value.toLowerCase()));
+        
+        setDisplayedLevelsList(levels);
+        //setDisplayedLevelsList((prev) => {return prev.filter(level => level.name.includes(e.target.value))});
     }
 
     return (
         <>
-            {/* Sorting */}
+            {/* Search Bar */}
             <div className="bg-gray-800 rounded-xl mx-auto px-3 my-3 py-2 w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]">
+                <p className="font-bold text-2xl mb-2 ml-1">Search</p>
+                <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={handleSearch}
+                    className="bg-gray-900 border-2 border-gray-700 px-3 py-2 mb-2 rounded-xl items-center w-full"
+                />
+            </div>
+
+            {/* Sorting */}
+            <div className="bg-gray-800 rounded-xl mx-auto px-3 my-3 pt-2 pb-1 w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]">
                 <div className="cursor-pointer flex flex-row w-full" onClick={(e) => {e.stopPropagation(); setSortMenuOpen(!sortMenuOpen)}}>
                     <p className="font-bold text-2xl mb-2 ml-1">Sort</p>
                     <p className={`ml-auto mr-4 mt-[5px] ${sortMenuOpen && "mt-[9px]"}`}>{sortMenuOpen ? "⌃" : "⌄"}</p>
                 </div>
-                <div className={`transition-all duration-400 overflow-hidden ${sortMenuOpen ? "max-h-96 mt-2" : "max-h-0"}`}>
+                <div className={`transition-all duration-400 overflow-hidden ${sortMenuOpen ? "max-h-96 mt-2 mb-1" : "max-h-0"}`}>
                     <div className="grid grid-cols-2 gap-2 text-xl mb-2">
                         <div className="flex flex-row bg-gray-900 p-3 rounded-xl items-center cursor-pointer" onClick={() => handleSortFuncChange("byId")}>
                             <p>By Level ID</p>
@@ -153,12 +197,12 @@ function List() {
             </div>
 
             {/* Filters */}
-            <div className="bg-gray-800 rounded-xl mx-auto px-3 my-3 py-2 w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]">
+            <div className="bg-gray-800 rounded-xl mx-auto px-3 my-3 pt-2 pb-1 w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]">
                 <div className="cursor-pointer flex flex-row w-full" onClick={(e) => {e.stopPropagation(); setFilterMenuOpen(!filterMenuOpen)}}>
                     <p className="font-bold text-2xl mb-2 ml-1">Filters</p>
                     <p className={`ml-auto mr-4 mt-[5px] ${filterMenuOpen && "mt-[9px]"}`}>{filterMenuOpen ? "⌃" : "⌄"}</p>
                 </div>
-                <div className={`transition-all duration-400 overflow-hidden ${filterMenuOpen ? "max-h-96 mt-2" : "max-h-0"}`}>
+                <div className={`transition-all duration-400 overflow-hidden ${filterMenuOpen ? "max-h-96 mt-2 mb-1" : "max-h-0"}`}>
                     <div className="grid grid-cols-2 gap-2 text-xl mb-2">
                         {/* Extras */}
                         <div className="flex flex-row bg-gray-900 p-3 rounded-xl items-center overflow-hidden cursor-pointer" onClick={handleMainOrExtendedChange}>
@@ -171,9 +215,9 @@ function List() {
                             />
                         </div>
                         {/* Difficulty */}
-                        <div className="flex flex-row bg-gray-900 p-3 rounded-xl items-center overflow-hidden">
+                        <div className={`flex flex-row bg-gray-900 p-3 rounded-xl items-center overflow-hidden ${sortMode === "byDifficulty" && "opacity-60 text-gray-600"}`}>
                             <p className="text-xl mr-3">Difficulty:</p>
-                            <select className="text-xl w-full" style={{appearance: "none"}} value={demonsOrNon} onChange={handleDemonsOrNonChange}>
+                            <select className="text-xl w-full" style={{appearance: "none"}} value={demonsOrNon} onChange={handleDemonsOrNonChange} disabled={sortMode === "byDifficulty"}>
                                 <option value="demons">Demons Only</option>
                                 <option value="non">Non-Demons Only</option>
                                 <option value="every">Demons and Non-Demons</option>
@@ -196,7 +240,7 @@ function List() {
                             return (aIndex === -1 ? Infinity : aIndex) - (bIndex === -1 ? Infinity : bIndex);
                         })())
                     .map((level, index) => {
-                    return <Level key={level.id} index={(index + 1).toString()} sortMode={sortMode} level={level} getData={fetchLevelData} />
+                    return <Level key={level.id} index={(index + 1).toString()} showNumber={searchQuery === "" && sortMode === "byDifficulty" ? true : false } level={level} getData={fetchLevelData} />
                 })}
             </div>
             {isDarkMode ? <p>dark on</p> : <p>dark off</p>}
