@@ -25,6 +25,25 @@ function List() {
         getNCLevelList();
     }, []);
 
+    useEffect(() => {
+        let levels = allLevels;
+        // Filter for main/all
+        if (mainOrExtended === "main") {
+            levels = levels.filter(level => level.extra === false);
+        }
+        // Filter for demons/non-demons
+        if (demonsOrNon === "demons") {
+            levels = levels.filter(level => level.stars === 10);
+        } else if (demonsOrNon === "non") {
+            levels = levels.filter(level => level.stars < 10);
+        }
+
+        // Filter for search query
+        levels = levels.filter(level => level.name.toLowerCase().includes(searchQuery.toLowerCase()));
+        
+        setDisplayedLevelsList(levels);
+    }, [mainOrExtended, demonsOrNon, searchQuery]);
+
     /* Fetch individual level data with a level ID as an input */
     async function fetchLevelData(levelid: string): Promise<LevelInterface> {
         try {
@@ -91,66 +110,15 @@ function List() {
     }
 
     function handleMainOrExtendedChange(): void {
-        let levels = allLevels;
-        // Filter for main/all
-        if (mainOrExtended === "main") {
-            setMainOrExtended("all");
-        } else {
-            setMainOrExtended("main");
-            levels = levels.filter(level => level.extra === false);
-        }
-        // Filter for demons/non-demons
-        if (demonsOrNon === "demons") {
-            levels = levels.filter(level => level.stars === 10);
-        } else if (demonsOrNon === "non") {
-            levels = levels.filter(level => level.stars < 10);
-        }
-
-        // Filter for search query
-        levels.filter(level => level.name.includes(searchQuery));
-
-        setDisplayedLevelsList(levels);
+        setMainOrExtended((prev) => prev === "main" ? "all" : "main")
     }
 
     function handleDemonsOrNonChange(e: React.ChangeEvent<HTMLSelectElement>): void {
         setDemonsOrNon(e.target.value);
-        let levels = allLevels;
-        // Filter for main/all
-        if (mainOrExtended === "main") {
-            levels = levels.filter(level => level.extra === false);
-        }
-        // Filter for demons/non-demons
-        if (e.target.value === "demons") {
-            levels = levels.filter(level => level.stars === 10);
-        } else if (e.target.value === "non") {
-            levels = levels.filter(level => level.stars < 10);
-        }
-
-        // Filter for search query
-        levels.filter(level => level.name.includes(searchQuery));
-
-        setDisplayedLevelsList(levels);
     }
 
     function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
         setSearchQuery(e.target.value);
-        let levels = allLevels;
-        // Filter for main/all
-        if (mainOrExtended === "main") {
-            levels = levels.filter(level => level.extra === false);
-        }
-        // Filter for demons/non-demons
-        if (demonsOrNon === "demons") {
-            levels = levels.filter(level => level.stars === 10);
-        } else if (demonsOrNon === "non") {
-            levels = levels.filter(level => level.stars < 10);
-        }
-
-        // Filter for search query
-        levels = levels.filter(level => level.name.toLowerCase().includes(e.target.value.toLowerCase()));
-        
-        setDisplayedLevelsList(levels);
-        //setDisplayedLevelsList((prev) => {return prev.filter(level => level.name.includes(e.target.value))});
     }
 
     return (
