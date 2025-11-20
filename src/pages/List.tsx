@@ -150,12 +150,15 @@ function List() {
             {/* Search Bar */}
             <div className="bg-gray-800 rounded-xl mx-auto px-3 my-3 py-2 w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]">
                 <p className="font-bold text-2xl mb-2 ml-1">Search</p>
-                <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={handleSearch}
-                    className="bg-gray-900 border-2 border-gray-700 px-3 py-2 mb-2 rounded-xl items-center w-full"
-                />
+                <div className="flex flex-row bg-gray-900 border-2 border-gray-700 px-3 mb-2 rounded-xl items-center w-full">
+                    <p className="text-3xl text-gray-500 pl-[2px]">🔍︎</p>
+                    <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={handleSearch}
+                        className="border-l-2 border-gray-700 py-2 ml-3 w-full"
+                    />
+                </div>
             </div>
 
             {/* Sorting */}
