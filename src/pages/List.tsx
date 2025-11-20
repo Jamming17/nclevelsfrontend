@@ -22,6 +22,10 @@ function List() {
     const [ sortMenuOpen, setSortMenuOpen ] = useState(false);
     const [ filterMenuOpen, setFilterMenuOpen ] = useState(false);
 
+    const [ viewMoreLevelId, setViewMoreLevelId ] = useState(0); //0 means no "view more" is being viewed for any level
+    const [ viewMoredLevels, setViewMoredLevels ] = useState<number[]>([]);
+
+
     /* Initial load of list */
     useEffect(() => {
         getNCLevelList();
@@ -48,6 +52,11 @@ function List() {
 
     /* Fetch individual level data with a level ID as an input */
     async function fetchLevelData(levelid: string): Promise<LevelInterface> {
+        const cached = allLevels.find(level => level.id == parseInt(levelid));
+        if (cached && viewMoredLevels.includes(parseInt(levelid))) {
+            return cached;
+        }
+        
         try {
             const data = await apiRequest("boomlings/getLevelId", {
                 params: {
@@ -59,6 +68,9 @@ function List() {
             if (dataObj && typeof dataObj === "object" && "success" in dataObj && "data" in dataObj) {
                 if (dataObj.success === true && levelInterfaceTypeGuard(dataObj.data)) {
                     console.log("Level data successfully retrieved:", dataObj.data);
+                    setViewMoredLevels((prev) => [parseInt(dataObj.data.id), ...prev]);
+                    // Update allLevels cache for future displays
+                    setAllLevels(prev => prev.map(level => level.id == dataObj.data.id ? dataObj.data : level));
                     return dataObj.data;
                 } else {
                     console.error("Data in wrong format:", dataObj.data);
@@ -69,7 +81,7 @@ function List() {
         } catch (err) {
             console.error("Failed to fetch levels:", err)
         }
-        return EMPTY_LEVEL;
+        return (cached ? cached : EMPTY_LEVEL);
     }
 
     /* Fetch the whole main list from the database */
@@ -127,6 +139,10 @@ function List() {
     function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
         setSearchQuery(e.target.value);
         setErrorMessage("No levels match your search query");
+    }
+
+    function handleViewMoreLevelId(levelid: number): void {
+        setViewMoreLevelId(levelid);
     }
 
     return (
@@ -217,7 +233,7 @@ function List() {
                             return (aIndex === -1 ? Infinity : aIndex) - (bIndex === -1 ? Infinity : bIndex);
                         })())
                     .map((level, index) => {
-                    return <Level key={level.id} index={(index + 1).toString()} showNumber={searchQuery === "" && sortMode === "byDifficulty" ? true : false } level={level} getData={fetchLevelData} />
+                    return <Level key={level.id} index={(index + 1).toString()} showNumber={searchQuery === "" && sortMode === "byDifficulty" ? true : false } level={level} isLevelBeingViewed={viewMoreLevelId == level.id} viewMore={fetchLevelData} handleViewMoreLevelId={handleViewMoreLevelId} />
                 }))
                 : (
                     <p className="bg-gray-800 rounded-2xl text-center font-bold mx-auto px-3 my-3 py-10 w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]">{errorMessage}</p>

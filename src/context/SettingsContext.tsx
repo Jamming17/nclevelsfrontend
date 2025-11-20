@@ -1,4 +1,4 @@
-import React, { useState, useContext, createContext, type ReactNode } from "react";
+import { useState, createContext, type ReactNode } from "react";
 
 /* Type interface for the contents of SettingsContext */
 interface SettingsContextInterface {

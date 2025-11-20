@@ -8,8 +8,14 @@ export interface LevelInterface {
     coin_count: number;
     coins_rated: boolean;
     length: string;
+    songId: number;
+    songName: string;
+    songCreator: string;
     extra: boolean;
     tags: string[];
+    downloads: number;
+    likes: number;
+    thumbnailAvailable: boolean;
 }
 
 export const EMPTY_LEVEL: LevelInterface = {
@@ -22,8 +28,14 @@ export const EMPTY_LEVEL: LevelInterface = {
     coin_count: 0,
     coins_rated: false,
     length: "Tiny",
+    songId: -1,
+    songName: "",
+    songCreator: "",
     extra: false,
-    tags: []
+    tags: [],
+    downloads: 0,
+    likes: 0,
+    thumbnailAvailable: false
 }
 
 export function levelInterfaceTypeGuard(obj: any): obj is LevelInterface {
@@ -38,9 +50,15 @@ export function levelInterfaceTypeGuard(obj: any): obj is LevelInterface {
         !isNaN(Number(obj.coin_count)) &&
         typeof obj.coins_rated === "boolean" &&
         typeof obj.length === "string" &&
+        !isNaN(Number(obj.songId)) &&
+        typeof obj.songName === "string" &&
+        typeof obj.songCreator === "string" &&
         typeof obj.extra === "boolean" &&
         Array.isArray(obj.tags) &&
-        obj.tags.every((tag: any) => typeof tag === "string")
+        obj.tags.every((tag: any) => typeof tag === "string") &&
+        !isNaN(Number(obj.downloads)) &&
+        !isNaN(Number(obj.likes)) &&
+        typeof obj.thumbnailAvailable === "boolean"
     );
 }
 
