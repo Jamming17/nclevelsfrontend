@@ -148,7 +148,7 @@ function List() {
     return (
         <>
             {/* Search Bar */}
-            <div className="bg-gray-800 rounded-xl mx-auto px-3 my-3 py-2 w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]">
+            <div className="bg-gray-800 border-2 border-gray-500 rounded-xl mx-auto px-3 my-3 py-2 w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]">
                 <p className="font-bold text-2xl mb-2 ml-1">Search</p>
                 <div className="flex flex-row bg-gray-900 border-2 border-gray-700 px-3 mb-2 rounded-xl items-center w-full">
                     <p className="text-3xl text-gray-500 pl-[2px]">🔍︎</p>
@@ -162,7 +162,7 @@ function List() {
             </div>
 
             {/* Sorting */}
-            <div className="bg-gray-800 rounded-xl mx-auto px-3 my-3 pt-2 pb-1 w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]">
+            <div className="bg-gray-800 border-2 border-gray-500 rounded-xl mx-auto px-3 my-3 pt-2 pb-1 w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]">
                 <div className="cursor-pointer flex flex-row w-full" onClick={(e) => {e.stopPropagation(); setSortMenuOpen(!sortMenuOpen)}}>
                     <p className="font-bold text-2xl mb-2 ml-1">Sort</p>
                     <p className={`ml-auto mr-4 mt-[5px] ${sortMenuOpen && "mt-[9px]"}`}>{sortMenuOpen ? "⌃" : "⌄"}</p>
@@ -192,7 +192,7 @@ function List() {
             </div>
 
             {/* Filters */}
-            <div className="bg-gray-800 rounded-xl mx-auto px-3 my-3 pt-2 pb-1 w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]">
+            <div className="bg-gray-800 border-2 border-gray-500 rounded-xl mx-auto px-3 my-3 pt-2 pb-1 w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]">
                 <div className="cursor-pointer flex flex-row w-full" onClick={(e) => {e.stopPropagation(); setFilterMenuOpen(!filterMenuOpen)}}>
                     <p className="font-bold text-2xl mb-2 ml-1">Filters</p>
                     <p className={`ml-auto mr-4 mt-[5px] ${filterMenuOpen && "mt-[9px]"}`}>{filterMenuOpen ? "⌃" : "⌄"}</p>

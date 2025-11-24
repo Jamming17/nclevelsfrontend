@@ -33,5 +33,4 @@ This website currently connects to the backend API (also currently only hosted l
 - You can click the View More button to view likes, downloads and song info for a level
 
 ## Planned Features
-- Home, Info and Credits pages
 - Toggleable light and dark mode

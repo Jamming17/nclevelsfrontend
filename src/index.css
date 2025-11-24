@@ -7,3 +7,59 @@
     font-weight: normal;
     font-style: normal;
 }
+
+/* NC Level Effect Background */
+.background-image-1 {
+    background-image: url("/assets/backgrounds/SharpMinor.jpg");
+    filter: grayscale(0.4) sepia(1) brightness(0.7) saturate(3.5) hue-rotate(10deg);
+}
+
+.background-image-2 {
+    background-image: url("/assets/backgrounds/NineCircles.png");
+    filter: grayscale(1) sepia(1) brightness(0.4) saturate(15) hue-rotate(330deg);
+}
+
+.background-image-3 {
+    background-image: url("/assets/backgrounds/SolarCircles.png");
+    filter: grayscale(1) sepia(1) brightness(0.7) saturate(6) hue-rotate(330deg);
+}
+
+.background-image-4 {
+    background-image: url("/assets/backgrounds/Problematic.png");
+    filter: grayscale(1) sepia(1) brightness(0.7) saturate(3) hue-rotate(80deg);
+}
+
+.background-image-5 {
+    background-image: url("/assets/backgrounds/FearMe.png");
+    filter: grayscale(1) sepia(1) brightness(0.7) saturate(3) hue-rotate(160deg);
+}
+
+.background-image-6 {
+    background-image: url("/assets/backgrounds/Fairydust.png");
+    filter: grayscale(1) sepia(1) brightness(0.7) saturate(5) hue-rotate(280deg);
+}
+
+.background-image-7 {
+    background-image: url("/assets/backgrounds/CrimsonClutter.jpg");
+    filter: grayscale(1) sepia(1) brightness(1.2) saturate(30) hue-rotate(345deg);
+}
+
+.background-image-8 {
+    background-image: url("/assets/backgrounds/Classic.png");
+    filter: grayscale(1) sepia(1) brightness(0.7) saturate(5) hue-rotate(80deg);
+}
+
+.background-image-9 {
+    background-image: url("/assets/backgrounds/Jawbreaker.png");
+    filter: grayscale(1) sepia(1) brightness(0.4) saturate(15) hue-rotate(220deg);
+}
+
+.background-image-10 {
+    background-image: url("/assets/backgrounds/Poltergeist.png");
+    filter: grayscale(1) brightness(1.2) saturate(1.5) hue-rotate(330deg);
+}
+
+.background-image-11 {
+    background-image: url("/assets/backgrounds/Astronaut13.png");
+    filter: grayscale(1) brightness(1.4) saturate(3) hue-rotate(330deg);
+}
