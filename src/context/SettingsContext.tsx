@@ -17,10 +17,28 @@ interface SettingsProviderProps {
 }
 
 export function SettingsContextProvider({ children }: SettingsProviderProps) {
-    const [ isDarkMode, setIsDarkMode ] = useState(true);
+    // Load theme from storage, else use current browser theme, else use dark theme
+    const [ isDarkMode, setIsDarkMode ] = useState<boolean>(() => {
+        if (localStorage.getItem("theme")) {
+            if (localStorage.getItem("theme") == "true") {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        try {
+            return window.matchMedia("(prefers-color-scheme: dark)").matches
+        } catch (err) {
+            console.log("Could not determine theme for user. Setting to dark theme.")
+        }
+        return true;
+    });
     
     function toggleDarkMode() {
-        setIsDarkMode((prev) => !prev);
+        setIsDarkMode((prev) => {
+            localStorage.setItem("theme", `${!prev}`);
+            return !prev
+        });
     }
 
     return (

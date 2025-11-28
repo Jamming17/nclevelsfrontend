@@ -4,10 +4,14 @@ import './index.css'
 import App from './App.tsx'
 import { BrowserRouter } from 'react-router-dom'
 
+import { SettingsContextProvider } from "./context/SettingsContext";
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
       <BrowserRouter>
-            <App />
+            <SettingsContextProvider>
+                <App />
+            </SettingsContextProvider>
       </BrowserRouter>
   </StrictMode>
 )

@@ -1,22 +1,28 @@
+import { useContext } from "react";
+import { SettingsContext } from "../context/SettingsContext";
 import { Link } from "react-router-dom";
 
 function Home() {
+
+    const { isDarkMode } = useContext(SettingsContext);
+
+    // ${isDarkMode ? "" : ""}
     return (
         <div>
             {/* Welcome */}
-            <div className="bg-gray-800 border-2 border-gray-500 rounded-xl py-3 px-10 mt-5 mx-auto w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]">
-                <h1 className="text-gray-300 text-3xl font-bold underline text-center pb-4">Welcome to the Nine Circles Level List</h1>
+            <div className={`${isDarkMode ? "bg-gray-800 border-gray-500" : "bg-gray-100 border-blue-400 text-gray-800"} border-2 rounded-xl py-3 px-10 mt-5 mx-auto w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]`}>
+                <h1 className={`${isDarkMode ? "text-gray-300" : "text-blue-800"} text-3xl font-bold underline text-center pb-4`}>Welcome to the Nine Circles Level List</h1>
                 <p>This website is a project developed by <span className="text-orange-400 font-bold">Jamming</span> to give a searchable and sortable list of all rated Nine Circles levels in Geometry Dash, including <span className="text-red-400 font-bold">demons</span> and <span className="text-green-400 font-bold">non-demons</span>.
-                    By default, this list will display only demon-difficulty levels in release order, though this can be changed by playing with the <span className="text-gray-300 font-bold">Sort</span> and <span className="text-gray-300 font-bold">Filters</span> options.</p>
-                <div className="text-blue-300 hover:text-blue-500 text-3xl font-bold underline text-center mt-6 mb-4 cursor-pointer"><Link to="/list">Click here to view the list!</Link></div>
+                    By default, this list will display only demon-difficulty levels in release order, though this can be changed by playing with the <span className={`${isDarkMode ? "text-gray-300" : "text-blue-600"} font-bold`}>Sort</span> and <span className={`${isDarkMode ? "text-gray-300" : "text-blue-600"} font-bold`}>Filters</span> options.</p>
+                <div className={`${isDarkMode ? "text-blue-300 hover:text-blue-500" : "text-purple-700 hover:text-purple-900"}  text-3xl font-bold underline text-center mt-6 mb-4 cursor-pointer`}><Link to="/list">Click here to view the list!</Link></div>
             </div>
 
             {/* Level Criteria */}
-            <div className="bg-gray-800 border-2 border-gray-500 rounded-xl py-3 px-10 mt-12 mx-auto w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]">
-                <h1 className="text-gray-300 text-3xl font-bold underline text-center pb-3">Level Criteria</h1>
+            <div className={`${isDarkMode ? "bg-gray-800 border-gray-500 " : "bg-gray-100 border-blue-400 text-gray-800"} border-2 rounded-xl py-3 px-10 mt-12 mx-auto w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]`}>
+                <h1 className={`${isDarkMode ? "text-gray-300" : "text-blue-800"} text-3xl font-bold underline text-center pb-3`}>Level Criteria</h1>
                 <p>Some levels on this list are marked with an <span className="text-pink-400 font-bold">Extra</span> tag. This tag means that the level is not technically classified as a Nine Circles Level, but is included as a extra on the list as it contains Nine Circles theming, has the effect for too short a time or has a similar effect.</p>
-                <p className="pt-6"><span className="text-red-400 font-bold">Demon</span> levels are classified by the <a href="https://www.ninecirclesdemonlist.com/home" title="Nine Circles Demonlist" className="text-blue-300 font-bold underline hover:text-blue-500">Nine Circles Demonlist</a> created by <span className="text-sky-300 font-bold">Zen0x50</span>.</p>
-                <p className="pt-6"><span className="text-green-400 font-bold">Non-demon</span> levels are classified by the <a href="https://docs.google.com/spreadsheets/d/1mMcVk8vjIU9whpSyW8hrLaevnwnQoQ6eFaDfuIT3VHw/edit?gid=82389180#gid=82389180" title="Chronological Nine Circles Levels List" className="text-blue-300 font-bold underline hover:text-blue-500">Chronological Nine Circles Levels List</a> created by <span className="text-purple-400 font-bold">NothingIsScary</span>.</p>
+                <p className="pt-6"><span className="text-red-400 font-bold">Demon</span> levels are classified by the <a href="https://www.ninecirclesdemonlist.com/home" title="Nine Circles Demonlist" className={`${isDarkMode ? "text-blue-300 hover:text-blue-500" : "text-purple-700 hover:text-purple-900"} font-bold underline`}>Nine Circles Demonlist</a> created by <span className={`${isDarkMode ? "text-sky-300" : "text-sky-500"} font-bold`}>Zen0x50</span>.</p>
+                <p className="pt-6"><span className="text-green-400 font-bold">Non-demon</span> levels are classified by the <a href="https://docs.google.com/spreadsheets/d/1mMcVk8vjIU9whpSyW8hrLaevnwnQoQ6eFaDfuIT3VHw/edit?gid=82389180#gid=82389180" title="Chronological Nine Circles Levels List" className={`${isDarkMode ? "text-blue-300 hover:text-blue-500" : "text-purple-700 hover:text-purple-900"} font-bold underline`}>Chronological Nine Circles Levels List</a> created by <span className={`${isDarkMode ? "text-purple-400" : "text-purple-600"} font-bold`}>NothingIsScary</span>.</p>
                 <p className="pt-6">In general, to count as a non-extra Nine Circles level, a level must meet the following criteria:</p>
                 <ul className="list-disc pt-3 pl-10">
                     <li>At least <b>25%</b> of the level's gameplay must be the wave gamemode</li>
@@ -28,8 +34,8 @@ function Home() {
             </div>
 
             {/* Credits */}
-            <div className="bg-gray-800 border-2 border-gray-500 rounded-xl py-3 px-10 mt-12 mx-auto w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]">
-                <h1 className="text-gray-300 text-3xl font-bold underline text-center pb-3">Credits</h1>
+            <div className={`${isDarkMode ? "bg-gray-800 border-gray-500 " : "bg-gray-100 border-blue-400 text-gray-800"} border-2 rounded-xl py-3 px-10 mt-12 mx-auto w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]`}>
+                <h1 className={`${isDarkMode ? "text-gray-300" : "text-blue-800"} text-3xl font-bold underline text-center pb-3`}>Credits</h1>
                 <p className="font-bold">Website:</p>
                 <ul className="list-disc pl-10">
                     <li>This website is developed and maintained by <span className="text-orange-400 font-bold">Jamming</span>.</li>
@@ -38,50 +44,50 @@ function Home() {
 
                 <p className="font-bold pt-5">Level information:</p>
                 <ul className="list-disc pl-10">
-                    <li>Demon level classification and difficulty order was provided by <span className="text-sky-300 font-bold">Zen0x50</span>.</li>
-                    <li>Non-demon level classification was provided by <span className="text-purple-400 font-bold">NothingIsScary</span>.</li>
+                    <li>Demon level classification and difficulty order was provided by <span className={`${isDarkMode ? "text-sky-300" : "text-sky-500"} font-bold`}>Zen0x50</span>.</li>
+                    <li>Non-demon level classification was provided by <span className={`${isDarkMode ? "text-purple-400" : "text-purple-600"} font-bold`}>NothingIsScary</span>.</li>
                 </ul>
 
                 <p className="font-bold pt-5">Media:</p>
                 <ul className="list-disc pl-10 mb-4">
-                    <li>Difficulty icons and stats assets were taken from <span className="text-orange-300 font-bold">Colon</span>'s' GD Browser.</li>
+                        <li>Difficulty icons and stats assets were taken from <span className={`${isDarkMode ? "text-orange-300" : "text-orange-500"} font-bold`}>Colon</span>'s GD Browser.</li>
                     <li>Level thumbnails were provided by
-                        <span className="text-yellow-300 font-bold"> Level Thumbnails</span> (by <span className="text-yellow-200 font-bold">CDC</span>),
-                        <span className="text-purple-400 font-bold"> NothingIsScary</span>,
-                        <span className="text-green-200 font-bold"> Ag Silver</span>,
-                        <span className="text-green-200 font-bold"> Akitsu</span>,
-                        <span className="text-green-200 font-bold"> BlownMika</span>,
-                        <span className="text-green-200 font-bold"> CLEANGD2828</span>,
-                        <span className="text-green-200 font-bold"> CrackdownGD</span>,
-                        <span className="text-green-200 font-bold"> GD Archives</span>,
-                        <span className="text-green-200 font-bold"> Issanagay</span>,
-                        <span className="text-green-200 font-bold"> Nonexistantbruh</span>,
-                        <span className="text-green-200 font-bold"> NQDGaming</span>,
-                        <span className="text-green-200 font-bold"> PlatformerGD</span>,
-                        <span className="text-green-200 font-bold"> TadpoleTroll</span>,
-                        <span className="text-green-200 font-bold"> trexhun</span> and
-                        <span className="text-green-200 font-bold"> XKL</span>.
+                        <span className={`${isDarkMode ? "text-yellow-300" : "text-amber-500"} font-bold`}> Level Thumbnails</span> (by <span className={`${isDarkMode ? "text-yellow-200" : "text-yellow-500"} font-bold`}>CDC</span>),
+                        <span className={`${isDarkMode ? "text-purple-400" : "text-purple-600"} font-bold`}> NothingIsScary</span>,
+                        <span className={`${isDarkMode ? "text-green-200" : "text-green-500"} font-bold`}> Ag Silver</span>,
+                        <span className={`${isDarkMode ? "text-green-200" : "text-green-500"} font-bold`}> Akitsu</span>,
+                        <span className={`${isDarkMode ? "text-green-200" : "text-green-500"} font-bold`}> BlownMika</span>,
+                        <span className={`${isDarkMode ? "text-green-200" : "text-green-500"} font-bold`}> CLEANGD2828</span>,
+                        <span className={`${isDarkMode ? "text-green-200" : "text-green-500"} font-bold`}> CrackdownGD</span>,
+                        <span className={`${isDarkMode ? "text-green-200" : "text-green-500"} font-bold`}> GD Archives</span>,
+                        <span className={`${isDarkMode ? "text-green-200" : "text-green-500"} font-bold`}> Issanagay</span>,
+                        <span className={`${isDarkMode ? "text-green-200" : "text-green-500"} font-bold`}> Nonexistantbruh</span>,
+                        <span className={`${isDarkMode ? "text-green-200" : "text-green-500"} font-bold`}> NQDGaming</span>,
+                        <span className={`${isDarkMode ? "text-green-200" : "text-green-500"} font-bold`}> PlatformerGD</span>,
+                        <span className={`${isDarkMode ? "text-green-200" : "text-green-500"} font-bold`}> TadpoleTroll</span>,
+                        <span className={`${isDarkMode ? "text-green-200" : "text-green-500"} font-bold`}> trexhun</span> and
+                        <span className={`${isDarkMode ? "text-green-200" : "text-green-500"} font-bold`}> XKL</span>.
                     </li>
-                    <li>The music disc icon was taken from the Jukebox mod for Geometry Dash by <span className="text-pink-300 font-bold">Fleym</span> and <span className="text-pink-300 font-bold">Flafy</span>.</li>
+                    <li>The music disc icon was taken from the Jukebox mod for Geometry Dash by <span className={`${isDarkMode ? "text-pink-300" : "text-pink-500"} font-bold`}>Fleym</span> and <span className={`${isDarkMode ? "text-pink-300" : "text-pink-500"} font-bold`}>Flafy</span>.</li>
                 </ul>
             </div>
 
             {/* Contact */}
-            <div className="bg-gray-800 border-2 border-gray-500 rounded-xl py-3 px-10 mt-12 mx-auto w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]">
-                <h1 className="text-gray-300 text-3xl font-bold underline text-center pb-3">Contact</h1>
+            <div className={`${isDarkMode ? "bg-gray-800 border-gray-500 " : "bg-gray-100 border-blue-400 text-gray-800"} border-2 rounded-xl py-3 px-10 mt-12 mx-auto w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]`}>
+                <h1 className={`${isDarkMode ? "text-gray-300" : "text-blue-800"} text-3xl font-bold underline text-center pb-3`}>Contact</h1>
                 <p className="text-center">You can find me on various platforms listed below!</p>
                 <div className="flex flex-row justify-center items-center my-5">
                     <img src="/assets/social-media/discord.png" alt="Discord Logo" className="h-15 w-15 mx-5" />
-                    <p className="text-2xl font-bold text-gray-400">@Jamming17</p>                    
+                    <p className={`${isDarkMode ? "text-blue-300" : "text-purple-700"} text-2xl font-bold`}>@Jamming17</p>                    
                 </div>
                 <div className="flex flex-row justify-center items-center my-5">
                     <div className="h-[3.4rem] w-[3.4rem] bg-white rounded-full -mr-[77px] -mb-[2px]" />
                     <img src="/assets/social-media/github.png" alt="GitHub Logo" className="h-15 w-15 mx-5" />
-                    <a href="https://github.com/Jamming17" className="text-2xl font-bold underline text-gray-400">Jamming17</a>                    
+                    <a href="https://github.com/Jamming17" className={`${isDarkMode ? "text-blue-300 hover:text-blue-500" : "text-purple-700 hover:text-purple-900"} text-2xl font-bold underline`}>Jamming17</a>                    
                 </div>
                 <div className="flex flex-row justify-center items-center my-5">
                     <img src="/assets/social-media/geometry-dash.png" alt="Geometry Dash Logo" className="h-15 w-15 mx-5" />
-                    <a href="https://gdbrowser.com/u/jamming" className="text-2xl font-bold underline text-gray-400">Jamming</a>                    
+                    <a href="https://gdbrowser.com/u/jamming" className={`${isDarkMode ? "text-blue-300 hover:text-blue-500" : "text-purple-700 hover:text-purple-900"} text-2xl font-bold underline`}>Jamming</a>                    
                 </div>
             </div>
         </div>

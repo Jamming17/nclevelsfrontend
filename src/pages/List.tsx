@@ -1,14 +1,14 @@
 import { useState, useEffect, useContext } from "react";
+import { SettingsContext } from "../context/SettingsContext";
 
 import Level from "../components/Level";
 import { levelInterfaceTypeGuard, EMPTY_LEVEL, DIFFICULTY_ARRAY, type LevelInterface } from "../data/LevelData";
 import { apiRequest } from "../apiClient";
-import { SettingsContext } from "../context/SettingsContext";
 
 
 function List() {
 
-    const { isDarkMode, toggleDarkMode } = useContext(SettingsContext);
+    const { isDarkMode } = useContext(SettingsContext);
     const [ allLevels, setAllLevels ] = useState<LevelInterface[]>([]);
     const [ displayedLevelsList, setDisplayedLevelsList ] = useState<LevelInterface[]>([]);
 
@@ -148,28 +148,28 @@ function List() {
     return (
         <>
             {/* Search Bar */}
-            <div className="bg-gray-800 border-2 border-gray-500 rounded-xl mx-auto px-3 my-3 py-2 w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]">
+            <div className={`${isDarkMode ? "bg-gray-800 border-gray-500" : "bg-gray-100 border-blue-400 text-gray-800"} border-2 rounded-xl mx-auto px-3 my-3 py-2 w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]`}>
                 <p className="font-bold text-2xl mb-2 ml-1">Search</p>
-                <div className="flex flex-row bg-gray-900 border-2 border-gray-700 px-3 mb-2 rounded-xl items-center w-full">
-                    <p className="text-3xl text-gray-500 pl-[2px]">🔍︎</p>
+                <div className={`${isDarkMode ? "bg-gray-900 border-gray-700" : "bg-blue-100 border-blue-400"} flex flex-row border-2 px-3 mb-2 rounded-xl items-center w-full`}>
+                    <p className={`${isDarkMode ? "text-gray-500" : "text-blue-700"} text-3xl pl-[2px] pt-[1px]`}>🔍︎</p>
                     <input
                         type="text"
                         value={searchQuery}
                         onChange={handleSearch}
-                        className="border-l-2 border-gray-700 py-2 ml-3 w-full"
+                        className={`${isDarkMode ? "border-gray-700" : "border-blue-400"} border-l-2 py-2 ml-3 pl-3 w-full`}
                     />
                 </div>
             </div>
 
             {/* Sorting */}
-            <div className="bg-gray-800 border-2 border-gray-500 rounded-xl mx-auto px-3 my-3 pt-2 pb-1 w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]">
+            <div className={`${isDarkMode ? "bg-gray-800 border-gray-500" : "bg-gray-100 border-blue-400 text-gray-800"} border-2 rounded-xl mx-auto px-3 my-3 pt-2 pb-1 w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]`}>
                 <div className="cursor-pointer flex flex-row w-full" onClick={(e) => {e.stopPropagation(); setSortMenuOpen(!sortMenuOpen)}}>
                     <p className="font-bold text-2xl mb-2 ml-1">Sort</p>
                     <p className={`ml-auto mr-4 mt-[5px] ${sortMenuOpen && "mt-[9px]"}`}>{sortMenuOpen ? "⌃" : "⌄"}</p>
                 </div>
                 <div className={`transition-all duration-400 overflow-hidden ${sortMenuOpen ? "max-h-96 mt-2 mb-1" : "max-h-0"}`}>
                     <div className="grid grid-cols-2 gap-2 text-xl mb-2">
-                        <div className="flex flex-row bg-gray-900 p-3 rounded-xl items-center cursor-pointer" onClick={() => handleSortFuncChange("byId")}>
+                        <div className={`${isDarkMode ? "bg-gray-900 border-gray-700" : "bg-blue-100 border-blue-400"} border-2 flex flex-row p-3 rounded-xl items-center cursor-pointer`} onClick={() => handleSortFuncChange("byId")}>
                             <p>By Level ID</p>
                             <input
                                 type="checkbox"
@@ -178,7 +178,7 @@ function List() {
                                 style={{ width: "20px", height: "20px" }}
                             />
                         </div>
-                        <div className="flex flex-row bg-gray-900 p-3 rounded-xl items-center cursor-pointer" onClick={() => handleSortFuncChange("byDifficulty")}>
+                        <div className={`${isDarkMode ? "bg-gray-900 border-gray-700" : "bg-blue-100 border-blue-400"} border-2 flex flex-row p-3 rounded-xl items-center cursor-pointer`} onClick={() => handleSortFuncChange("byDifficulty")}>
                             <p>By Difficulty</p>
                             <input
                                 type="checkbox"
@@ -192,7 +192,7 @@ function List() {
             </div>
 
             {/* Filters */}
-            <div className="bg-gray-800 border-2 border-gray-500 rounded-xl mx-auto px-3 my-3 pt-2 pb-1 w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]">
+            <div className={`${isDarkMode ? "bg-gray-800 border-gray-500" : "bg-gray-100 border-blue-400 text-gray-800"} border-2 rounded-xl mx-auto px-3 my-3 pt-2 pb-1 w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]`}>
                 <div className="cursor-pointer flex flex-row w-full" onClick={(e) => {e.stopPropagation(); setFilterMenuOpen(!filterMenuOpen)}}>
                     <p className="font-bold text-2xl mb-2 ml-1">Filters</p>
                     <p className={`ml-auto mr-4 mt-[5px] ${filterMenuOpen && "mt-[9px]"}`}>{filterMenuOpen ? "⌃" : "⌄"}</p>
@@ -200,7 +200,7 @@ function List() {
                 <div className={`transition-all duration-400 overflow-hidden ${filterMenuOpen ? "max-h-96 mt-2 mb-1" : "max-h-0"}`}>
                     <div className="grid grid-cols-2 gap-2 text-xl mb-2">
                         {/* Extras */}
-                        <div className="flex flex-row bg-gray-900 p-3 rounded-xl items-center overflow-hidden cursor-pointer" onClick={handleMainOrExtendedChange}>
+                        <div className={`${isDarkMode ? "bg-gray-900 border-gray-700" : "bg-blue-100 border-blue-400"} border-2 flex flex-row p-3 rounded-xl items-center overflow-hidden cursor-pointer`} onClick={handleMainOrExtendedChange}>
                             <p className="flex text-xl mr-5">Show Extras</p>
                             <input
                                 type="checkbox"
@@ -210,12 +210,12 @@ function List() {
                             />
                         </div>
                         {/* Difficulty */}
-                        <div className={`flex flex-row bg-gray-900 p-3 rounded-xl items-center overflow-hidden ${sortMode === "byDifficulty" && "opacity-60 text-gray-600"}`}>
+                        <div className={`${isDarkMode ? "bg-gray-900 border-gray-700" : "bg-blue-100 border-blue-400"} border-2 flex flex-row p-3 rounded-xl items-center overflow-hidden ${sortMode === "byDifficulty" && "opacity-60 text-gray-600"}`}>
                             <p className="text-xl mr-3">Difficulty:</p>
                             <select className="text-xl w-full" style={{appearance: "none"}} value={demonsOrNon} onChange={handleDemonsOrNonChange} disabled={sortMode === "byDifficulty"}>
-                                <option value="demons">Demons Only</option>
-                                <option value="non">Non-Demons Only</option>
-                                <option value="every">Demons and Non-Demons</option>
+                                <option value="demons">Demons</option>
+                                <option value="non">Non-Demons</option>
+                                <option value="every">All</option>
                             </select>
                             <p className="text-lg ml-auto mr-4 -mt-1">⌄</p>
                         </div>
@@ -239,11 +239,10 @@ function List() {
                     return <Level key={level.id} index={(index + 1).toString()} showNumber={searchQuery === "" && sortMode === "byDifficulty" ? true : false } level={level} isLevelBeingViewed={viewMoreLevelId == level.id} viewMore={fetchLevelData} handleViewMoreLevelId={handleViewMoreLevelId} />
                 }))
                 : (
-                    <p className="bg-gray-800 rounded-2xl text-center font-bold mx-auto px-3 my-3 py-10 w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]">{errorMessage}</p>
+                    <p className={`${isDarkMode ? "bg-gray-800 border-gray-500" : "bg-gray-100 border-blue-400 text-gray-800"} border-2 rounded-2xl text-center font-bold mx-auto px-3 my-3 py-10 w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px]`}>{errorMessage}</p>
                 )
             }
             </div>
-            {isDarkMode ? <p>dark on</p> : <p>dark off</p>}
         </>
     );
 }

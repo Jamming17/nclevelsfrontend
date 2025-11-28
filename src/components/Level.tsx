@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
+import { SettingsContext } from "../context/SettingsContext";
 
 import Tag from "./Tag";
 import type { LevelInterface } from "../data/LevelData";
@@ -14,9 +15,8 @@ interface LevelProps {
 
 function Level({level, index, showNumber, isLevelBeingViewed, viewMore, handleViewMoreLevelId} : LevelProps) {
 
+    const { isDarkMode } = useContext(SettingsContext);
     const [ currentLevel, setCurrentLevel ] = useState(level);
-    const [ imgSrc, setImgSrc ] = useState(`https://levelthumbs.prevter.me/thumbnail/${currentLevel.id}/small`);
-
     const [ isLoading, setIsLoading ] = useState(false);
 
     async function reloadLevelData(): Promise<void> {
@@ -27,12 +27,11 @@ function Level({level, index, showNumber, isLevelBeingViewed, viewMore, handleVi
         setIsLoading(false);
         setCurrentLevel(newLevel);
         console.log("New Level: ", newLevel);
-        //setImgSrc(`https://levelthumbs.prevter.me/thumbnail/${currentLevel.id}/small`);
     }
 
     return (
         <div className={`mx-10 mt-3 w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1200px] h-[200px] ${isLevelBeingViewed ? "mb-26" : "mb-3"}`}>
-            <div className={`flex flex-row bg-gray-800 border-2 border-gray-500 ${isLevelBeingViewed ? "rounded-t-xl" : "rounded-xl"}`}>
+            <div className={`${isDarkMode ? "bg-gray-800 border-gray-500" : "bg-gray-100 border-blue-400"} flex flex-row border-2 ${isLevelBeingViewed ? "rounded-t-xl" : "rounded-xl"}`}>
                 {/* Level Thumbnail */}
                 <div>
                     <img 
@@ -95,14 +94,14 @@ function Level({level, index, showNumber, isLevelBeingViewed, viewMore, handleVi
                     </div>
                 </div>
 
-                <div className="flex flex-col w-full">
+                <div className={`${isDarkMode ? "text-white" : "text-gray-800"} flex flex-col w-full`}>
                     {/* Level Details */}
                     <div className="m-3">
                         <div className="flex flex-row">
                             <p className="font-bold text-3xl mr-auto">{showNumber && `#${index} - `}{currentLevel.name}</p>
-                            <p className="italic text-xl text-gray-400">#{currentLevel.id}</p>
+                            <p className={`${isDarkMode ? "text-gray-400" : "text-blue-700"} italic text-xl`}>#{currentLevel.id}</p>
                         </div>
-                        <p className="font-bold text-md text-gray-300">by {currentLevel.creator}</p>
+                        <p className={`${isDarkMode ? "text-gray-300" : "text-blue-500"} font-bold text-md`}>by {currentLevel.creator}</p>
                     </div>
 
                     {/* Tags */}
@@ -120,13 +119,12 @@ function Level({level, index, showNumber, isLevelBeingViewed, viewMore, handleVi
                         <p className={`mr-3 font-bold hover:no-underline ${isLevelBeingViewed ? "mt-4" : "mt-3"}`}>{isLevelBeingViewed ? "⌃" : "⌄"}</p>
                     </div>
                 </div>
-
-
-                {/*<button className="p-5 cursor-pointer border border-red-700 rounded-xl" onClick={() => console.log("Image src:", imgSrc)}>h</button>*/}
             </div>
+
+            {/* View More */}
             {isLevelBeingViewed &&
 
-                <div className="flex flex-col bg-gray-900 border-b-2 border-x-2 border-gray-500 rounded-b-xl py-2">
+                <div className={`${isDarkMode ? "bg-gray-900 border-gray-500" : "bg-blue-100 border-blue-400"} flex flex-col border-b-2 border-x-2 rounded-b-xl py-2`}>
                     {isLoading ? (
                         <p className="leading-none text-3xl my-5.5 mx-auto" style={{ fontFamily: "Pusab", WebkitTextStroke: "1px black" }}>Loading...</p>
                     ) : (
