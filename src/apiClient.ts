@@ -1,10 +1,10 @@
+const url = import.meta.env.VITE_BACKEND_URL;
+
 export interface ApiOptions {
     method?: "GET" | "POST" | "PUT" | "DELETE";
     params?: any;
     headers?: Record<string, string>;
 }
-
-const API_BASE_URL = "http://localhost:4000/jack/gd/";
 
 export async function apiRequest<T>(
     endpoint: string,
@@ -13,7 +13,7 @@ export async function apiRequest<T>(
     const { method = "GET", params, headers = {} } = options;
     const query = params ? `?${new URLSearchParams(params).toString()}` : "";
     try {
-        const response = await fetch(`${API_BASE_URL}${endpoint}${query}`, {
+        const response = await fetch(`${url}${endpoint}${query}`, {
             method,
             headers: {
                 ...headers
